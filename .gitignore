@@ -1,3 +1,4 @@
 # Project exclude paths
 /foody-domain/target/
 /foody-service/target/
+/.idea/
