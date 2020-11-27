@@ -1,6 +1,7 @@
 package com.foody.api.client.model.entities;
 
 import java.math.BigDecimal;
+import java.util.Base64;
 import java.util.UUID;
 
 public class Item {
@@ -9,7 +10,7 @@ public class Item {
     private String name;
     private String description;
     private double price;
-    private String imageURL;
+    private String image;
     private boolean active; //Status
 
     public Item() {
@@ -59,6 +60,14 @@ public class Item {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public boolean isActive() {
