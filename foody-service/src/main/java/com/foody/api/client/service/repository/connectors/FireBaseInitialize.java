@@ -15,7 +15,7 @@ public class FireBaseInitialize {
     public void initialize() {
         try {
 
-            final String serviceAccountKey = "C:\\Users\\ferod\\IdeaProjects\\Foody\\foody-service\\conf\\local\\serviceAccountKey.json";
+            final String serviceAccountKey = "D:\\Programacion\\api-foody\\foody-service\\conf\\local\\serviceAccountKey.json";
             FileInputStream serviceAccount =
                     new FileInputStream(serviceAccountKey);
 

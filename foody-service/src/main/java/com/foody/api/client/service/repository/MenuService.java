@@ -1,69 +1,72 @@
 package com.foody.api.client.service.repository;
 
+import com.foody.api.client.model.entities.Menu;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
-import com.foody.api.client.model.entities.Restaurant;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-@Service
-public class RestaurantService {
-    public static final String COL_NAME="restaurants";
 
-    public String saveRestaurantDetails(Restaurant restaurant) throws InterruptedException, ExecutionException {
+
+//No creo que sea necesaria esta clase o en tal caso debe ser reformulada.
+@Service
+public class MenuService {
+    public static final String COL_NAME="menus";
+
+    public String saveMenuDetails(Menu menu) throws InterruptedException, ExecutionException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
-        restaurant.initialize();
-        ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(restaurant.getId().toString()).set(restaurant);
+        menu.initialize();
+        ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(menu.getId().toString()).set(menu);
         return collectionsApiFuture.get().getUpdateTime().toString();
     }
 
-    public Restaurant getRestaurantDetails(String id) throws InterruptedException, ExecutionException {
+    public Menu getMenuDetails(String id) throws InterruptedException, ExecutionException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
         DocumentReference documentReference = dbFirestore.collection(COL_NAME).document(id);
         ApiFuture<DocumentSnapshot> future = documentReference.get();
 
         DocumentSnapshot document = future.get();
 
-        Restaurant restaurant = null;
+        Menu menu = null;
 
         if(document.exists()) {
-            restaurant = document.toObject(Restaurant.class);
-            return restaurant;
+            menu = document.toObject(Menu.class);
+            return menu;
         }else {
             return null;
         }
     }
 
-    public List<Restaurant> getRestaurants() throws InterruptedException, ExecutionException {
-        List<Restaurant> restaurants = new ArrayList<>();
+    public List<Menu> getMenus() throws InterruptedException, ExecutionException {
+        List<Menu> menus = new ArrayList<>();
         Firestore dbFirestore = FirestoreClient.getFirestore();
-        //Iterable<DocumentReference> documentReferences= dbFirestore.collection(COL_NAME).listDocuments();
+        Iterable<DocumentReference> documentReferences= dbFirestore.collection(COL_NAME).listDocuments();
 
         //asynchronously retrieve all documents
         ApiFuture<QuerySnapshot> future = dbFirestore.collection(COL_NAME).get();
         // future.get() blocks on response
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
         for (QueryDocumentSnapshot document : documents) {
-            //System.out.println(document.getId() + " => " + document.toObject(Restaurant.class));
-            restaurants.add(document.toObject(Restaurant.class));
+            //System.out.println(document.getId() + " => " + document.toObject(Menu.class));
+            menus.add(document.toObject(Menu.class));
         }
 
-        return restaurants;
+        return menus;
     }
 
-    public String updateRestaurantDetails(Restaurant restaurant) throws InterruptedException, ExecutionException {
+    public String updateMenuDetails(Menu menu) throws InterruptedException, ExecutionException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
-        ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(restaurant.getId().toString()).set(restaurant);
+        ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(COL_NAME).document(menu.getId().toString()).set(menu);
         return collectionsApiFuture.get().getUpdateTime().toString();
     }
 
-    public String deleteRestaurant(String id) {
+    public String deleteMenu(String id) {
         Firestore dbFirestore = FirestoreClient.getFirestore();
         ApiFuture<WriteResult> writeResult = dbFirestore.collection(COL_NAME).document(id).delete();
-        return "Document with Restaurant ID "+id+" has been deleted";
+        return "Document with Menu ID "+id+" has been deleted";
     }
 }
